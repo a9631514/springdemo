@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+	<context:annotation-config/>
+	<context:component-scan base-package="tw.jerry.demo"/>
+	<aop:aspectj-autoproxy/>
+
+
+<!--       Teacher teacher1 = new EnglishTeacher() -->
+	<bean id="teacher1" class="tw.jerry.demo.model.EnglishTeacher" />
+	
+	
+<!-- 	String string0 = new String("Information"); -->
+	<bean id="string0" name="string1, string2" class="java.lang.String">
+	   <constructor-arg value="Information"></constructor-arg>
+	</bean>
+	
+	<bean id="loginDao" class="tw.jerry.demo.model.LoginDao"></bean>
+	
+<!-- 	constructor injection -->
+<!-- 	LoginService loginService = new LoginService(loginDao); -->
+	<bean id="loginService" class="tw.jerry.demo.service.LoginService">
+	   <constructor-arg ref="loginDao"></constructor-arg>
+	</bean>
+	
+<!-- 	setter injection -->
+<!-- loginService.setLoginDao(loginDao) -->
+	<bean id="loginService2" class="tw.jerry.demo.service.LoginService">
+	   <property name="loginDao" ref="loginDao"></property>
+	</bean>
+	
+	<bean id="car1" class="tw.jerry.demo.model.Car">
+	  <constructor-arg index="0" value="1001" />
+	  <constructor-arg index="1" value="Model 3" />
+	  <constructor-arg index="2" value="Tesla" />
+	</bean>
+	
+	<bean id="date1" class="java.util.Date" />
+	
+	<bean id="car2" class="tw.jerry.demo.model.Car">
+	  <constructor-arg ref="date1"></constructor-arg>
+	</bean>
+	
+	<bean id="car3" class="tw.jerry.demo.model.Car" 
+	   p:carId="1002"
+	   p:name="911"
+	   p:brand="Porsche"
+	   p:releaseDate-ref="date1"
+	/>
+	<bean id="javaBook" class="tw.jerry.demo.model.BookBeanStaticFactory" factory-method="getBook">
+	<constructor-arg value="1"></constructor-arg>
+	</bean>
+	
+	<bean id="bookBeanFactory" class="tw.jerry.demo.model.BookBeanFactory">
+	 <property name="bookmap">
+	  <map>
+		<entry key="3">
+			<bean class="tw.jerry.demo.model.Book">
+				<property name="bookid" value="3"></property>
+				<property name="booktitle" value="掌握市場週期"></property>
+			</bean>
+		</entry>	
+		<entry key="4">
+			<bean class="tw.jerry.demo.model.Book">
+				<property name="bookid" value="4"></property>
+				<property name="booktitle" value="TCP IP 說明書"></property>
+			</bean>
+		</entry>
+	  </map>
+	 </property>
+	</bean>
+	<bean id="marketBook" factory-bean="bookBeanFactory" factory-method="getBook">
+		<constructor-arg value="3"></constructor-arg>
+	</bean>
+	<bean id="tcpBook" factory-bean="bookBeanFactory" factory-method="getBook">
+		<constructor-arg value="4"></constructor-arg>
+	</bean>
+	
+	<bean id="props" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="location">
+			<value>classpath:light.properties</value>
+		</property>
+	</bean>
+	
+</beans>
