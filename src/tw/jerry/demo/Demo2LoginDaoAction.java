@@ -11,7 +11,7 @@ public class Demo2LoginDaoAction {
 		
 		LoginDao loginDao = context.getBean("loginDao", LoginDao.class);
 		
-		boolean result = loginDao.checkLogin("jerry", "pwdd222");
+		boolean result = loginDao.checkLogin("jetty", "pwdd222");
 		
 		System.out.println("result: " + result);
 		
